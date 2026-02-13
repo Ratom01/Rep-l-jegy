@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    li{
+        display: inline-block;
+        list-style-position: outside;
+        list-style-type: none;
+        margin: 10px;
+    }
+</style>
+<header>
+    <div>
+        <ul>
+            <li>
+                <a href="/">Index</a>
+            </li>
+            <li sec:authorize="!isAuthenticated()">
+                <a href="/login">Login</a>
+            </li>
+            <li sec:authorize="!isAuthenticated()">
+                <a href="/regist">Regist</a>
+            </li>
+            <li sec:authorize="hasAuthority('ROLE_ADMIN')">
+                <a href="/admin">Admin</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a href="/profil">Profil</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a href="/ticket">Ticket</a>
+            </li>
+        </ul>
+    </div>
+</header>
+<body>
+<div>
+  <p>Profil:</p>
+  <div>
+    <p th:text="${user.getName()}"></p>
+    <p th:text="${user.getEmail()}"></p>
+    <p th:text="${user.getBirthDate().split(' ')[0]}"></p>
+  </div>
+    <form th:action="@{/modify}" method="get">
+        <button type="submit">Modositás</button>
+    </form>
+    <form th:action="@{/delete}" method="post">
+        <button type="submit">Fiók törlése</button>
+    </form>
+
+</div>
+<div>
+    <table>
+        <th>Jegykategória</th>
+        <th>Ülőhely</th>
+        <th>Bizotsítás</th>
+        <th>Név</th>
+        <th>Email</th>
+        <th>Kiinduló város</th>
+        <th>Beérkezési város</th>
+        <th>Indulási idő</th>
+        <th>Érkezési idő</th>
+        <th>Ár</th>
+        <tr th:each="customticket: ${customticket}">
+            <td th:text="${customticket.ticket_category}"></td>
+            <td th:text="${customticket.seat}"></td>
+            <td th:text="${customticket.insurance}"></td>
+            <td th:text="${customticket.name}"></td>
+            <td th:text="${customticket.email}"></td>
+            <td th:text="${customticket.startingTown}"></td>
+            <td th:text="${customticket.landingTown}"></td>
+            <td th:text="${customticket.startingTime}"></td>
+            <td th:text="${customticket.landingTime}"></td>
+            <td th:text="${customticket.price}"></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

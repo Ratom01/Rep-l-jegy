@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    li{
+        display: inline-block;
+        list-style-position: outside;
+        list-style-type: none;
+        margin: 10px;
+    }
+</style>
+<header>
+    <div>
+        <ul>
+            <li>
+                <a href="/">Index</a>
+            </li>
+            <li sec:authorize="!isAuthenticated()">
+                <a href="/login">Login</a>
+            </li>
+            <li sec:authorize="!isAuthenticated()">
+                <a href="/regist">Regist</a>
+            </li>
+            <li sec:authorize="hasAuthority('ROLE_ADMIN')">
+                <a href="/admin">Admin</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a href="/profil">Profil</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a href="/ticket">Ticket</a>
+            </li>
+        </ul>
+    </div>
+</header>
+
+<body>
+<p>Legnépszerübb járatok:</p>
+<form th:action="${'/index'}" method="post">
+    <label for="hany">Hányat?</label>
+    <input type="number" name="hany" id="hany">
+    <button>Lekérdez!</button>
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Kindulási város:
+            </th>
+            <th>
+                Érkezési város:
+            </th>
+            <th>
+                Emberek száma:
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="fav : ${fav}">
+            <td th:text="${fav.getKi()}"></td>
+            <td th:text="${fav.getBe()}"></td>
+            <td th:text="${fav.getEmberek()}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

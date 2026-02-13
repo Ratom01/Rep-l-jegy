@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <button onclick="window.location.href='/ticket'">Vissza</button>
+</div>
+<div th:if="${error!=null}">
+    <p th:text="${error}"></p>
+</div>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Járat ID</th>
+            <th>Kiindulási város</th>
+            <th>Kiindulási idő</th>
+            <th>Érkezési város</th>
+            <th>Érkezési idő</th>
+            <th>Repülő ID</th>
+            <th>Ár</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customflight: ${customflight}">
+            <td th:text="${customflight.flightId}"></td>
+            <td th:text="${customflight.startingTown}"></td>
+            <td th:text="${customflight.startingTime}"></td>
+            <td th:text="${customflight.landingTown}"></td>
+            <td th:text="${customflight.landingTime}"></td>
+            <td th:text="${customflight.planeId}"></td>
+            <td th:text="${customflight.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+<form th:action="@{/ticket/create/{flightId}(flightId=${flight.id})}" method="post">
+
+    <label for="ticketCategoryId">Biztosítás:</label>
+    <select id="ticketCategoryId" name="ticketCategoryId">
+        <option th:each="ticketcategory: ${ticketcategory}"
+                th:value="${ticketcategory.id}"
+                th:text="${ticketcategory.name}">
+        </option>
+    </select>
+    <label for="insuranceId">Biztosítás:</label>
+    <select id="insuranceId" name="insuranceId">
+        <option th:each="insurance: ${insurance}"
+                th:value="${insurance.id}"
+                th:text="${insurance.name}">
+        </option>
+    </select>
+    <label for="name">Név:</label>
+    <input type="text" id="name" name="name" maxlength="100" required><br><br>
+
+    <label for="seat">Ülőhely:</label>
+    <input type="number" id="seat" name="seat" required><br><br>
+
+    <label>Akarsz szállodát?</label><br>
+    <input type="radio" id="hotelYes" name="wantsHotel" value="yes" onclick="showHotels(true)">
+    <label for="hotelYes">Igen</label><br>
+    <input type="radio" id="hotelNo" name="wantsHotel" value="no" onclick="showHotels(false)" checked>
+    <label for="hotelNo">Nem</label><br><br>
+
+    <div id="hotelSelection" style="display:none;">
+        <label for="hotelId">Válassz szállodát:</label>
+        <select id="hotelId" name="hotelId">
+            <option value="" disabled selected>Válassz szállodát</option>
+            <option th:each="hotel: ${hotels}"
+                    th:value="${hotel.id}"
+                    th:text="${hotel.name}">
+            </option>
+        </select>
+    </div>
+
+    <button type="submit">Jegy vásárlása</button>
+</form>
+<script>
+    function showHotels(show) {
+        document.getElementById('hotelSelection').style.display = show ? 'block' : 'none';
+    }
+</script>
+</body>
+</html>
